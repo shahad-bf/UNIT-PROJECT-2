@@ -1,0 +1,184 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    font-family: sans-serif;
+}
+
+.wrapper {
+    padding: 0px 4rem;
+
+}
+
+.logo {
+    font-size: 1.5rem;
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.link-home{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+a{
+    color: rgb(3, 3, 42);
+    text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+body {
+  font-family: 'Cairo', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+
+
+.dark-mode {
+  background-color: #1e1e2f;
+  color: #f3f3f3;
+}
+
+
+
+/* ---------- Navbar ---------- */
+.navigation-bar {
+  background: white;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 1100px;             /* ✅ تصغير العرض */
+  margin: 20px auto;             /* ✅ توسيط الشريط */
+  border-radius: 40px;           /* ✅ جعل الأطراف دائرية */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-logo span {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ec4899; /* وردي واضح */
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ---------- قائمة الروابط ---------- */
+.nav-list ul {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-list a {
+  text-decoration: none;
+  color: #333;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+  font-weight: 500;
+}
+
+.nav-list a:hover {
+  color: #ec4899;
+}
+
+/* ---------- خيارات المستخدم ---------- */
+.nav-options {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-options a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  font-weight: 500;
+}
+
+.nav-options a:hover {
+  color: #ec4899;
+}
+
+/* ---------- أيقونات التبديل بين الأنماط ---------- */
+.modes-container span {
+  font-size: 22px;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.modes-container span:hover {
+  color: #8b5cf6;
+  transform: scale(1.1);
+}
+
+.mode-active {
+  color: #8b5cf6;
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  background-color: #2d0e48;
+  color: #e5d9f2;
+  padding: 12px;
+  text-align: center;
+  font-size: 0.8rem;
+  margin-top: 60px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .navigation-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    max-width: 95%;
+  }
+
+  .nav-list ul {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 10px;
+    align-items: flex-start;
+  }
+
+  .nav-options {
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    align-items: flex-start;
+    
+    
+  }
+
+  .nav-logo span {
+    margin-bottom: 12px;
+  }
+}
+

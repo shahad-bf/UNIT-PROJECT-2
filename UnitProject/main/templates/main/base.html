@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}  DailyBoost{% endblock %}</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="{% if 'mode' in request.COOKIES %}dark-mode{% endif %}">
+
+  <!-- ✅ الشريط الكامل -->
+  <header class="flex justify-between items-center px-6 py-4">
+
+    <!-- LEFT: عنوان الصفحة خارج الشريط الأبيض -->
+    <div class="text-pink-500 text-2xl font-bold" style="font-family: 'Poppins', sans-serif;">
+      DailyBoost
+    </div>
+
+    <!-- CENTER: الشريط الأبيض -->
+    <nav class="bg-white shadow-md rounded-full px-6 py-2 flex gap-6 text-sm font-medium text-gray-800 max-w-3xl w-full justify-center">
+      <a href="{% url 'main:view_main' %}" class="hover:text-pink-500 transition">Home</a>
+      <a href="{% url 'main:properties_view' %}" class="hover:text-pink-500 transition">Properties</a>
+      <a href="#" class="hover:text-pink-500 transition">Services</a>
+      <a href="#" class="hover:text-pink-500 transition">About</a>
+      <a href="{% url 'main:contact_view' %}" class="hover:text-pink-500 transition">Contact</a>
+    </nav>
+
+    <!-- RIGHT: أيقونة الشخص + الأوضاع -->
+    <div class="flex items-center gap-4 text-sm text-gray-700">
+      <a class="flex items-center gap-1 hover:text-pink-500 transition">
+        <span class="material-symbols-outlined">person</span>
+        <span>Sign up</span>
+      </a>
+      <a href="{% url 'main:light_mode_view' %}" class="{% if 'mode' not in request.COOKIES %}text-purple-500{% endif %}">
+        <span class="material-symbols-outlined hover:text-pink-500 transition">light_mode</span>
+      </a>
+      <a href="{% url 'main:dark_mode_view' %}" class="{% if 'mode' in request.COOKIES %}text-purple-500{% endif %}">
+        <span class="material-symbols-outlined hover:text-pink-500 transition">dark_mode</span>
+      </a>
+    </div>
+
+  </header>
+
+  <!-- 📄 Page Content -->
+  <main class="p-6 sm:p-10">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+
+</body>
+</html>
