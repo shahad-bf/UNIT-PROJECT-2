@@ -1,0 +1,186 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Book Appointment - Dr. {{ doctor_profile.user.get_full_name }}{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto; padding: 20px;">
+  <div class="item" style="padding: 40px;">
+    <div style="margin-bottom: 30px;">
+      <h1 style="font-size: 28px; font-weight: 600; color: var(--text-color); margin-bottom: 10px;">Book Appointment</h1>
+      <div style="display: flex; align-items: center; gap: 15px; padding: 20px; background: var(--dashboard-body-color); border-radius: 12px; margin-bottom: 20px;">
+        <span class="material-symbols-outlined" style="font-size: 48px; color: var(--primary-color);">account_circle</span>
+        <div>
+          <h3 style="font-size: 20px; font-weight: 600; color: var(--text-color); margin: 0;">Dr. {{ doctor_profile.user.get_full_name }}</h3>
+          <p style="color: var(--light-text-color); margin: 5px 0;">{{ doctor_profile.specialty.name }}</p>
+          <p style="color: var(--light-text-color); margin: 0; font-size: 14px;">{{ doctor_profile.consultation_fee }} SAR</p>
+        </div>
+      </div>
+      
+      <!-- Booking Process Information -->
+      <div style="background: #e3f2fd; border: 1px solid #bbdefb; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+          <span class="material-symbols-outlined" style="color: #1976d2; font-size: 20px; margin-right: 8px;">info</span>
+          <h4 style="color: #1976d2; margin: 0; font-size: 16px; font-weight: 600;">How it works:</h4>
+        </div>
+        <ol style="color: #1976d2; margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.6;">
+          <li>Fill out the appointment form below</li>
+          <li>You'll receive an instant confirmation with your appointment ID</li>
+          <li>The doctor will review your information and respond within 24-48 hours</li>
+          <li>You'll get a notification when the doctor provides their diagnosis and treatment plan</li>
+        </ol>
+      </div>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" style="display: grid; gap: 25px;">
+      {% csrf_token %}
+      
+      <!-- Patient Information -->
+      <div style="border-bottom: 1px solid var(--border-color); padding-bottom: 20px;">
+        <h3 style="font-size: 18px; font-weight: 600; color: var(--text-color); margin-bottom: 15px;">Patient Information</h3>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+          <div>
+            <label style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-color);">Full Name *</label>
+            <input type="text" name="patient_name" required
+                   style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--white-color); color: var(--text-color); font-size: 14px;">
+          </div>
+          
+          <div>
+            <label style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-color);">Patient ID</label>
+            <input type="text" name="patient_id" placeholder="Optional - For linking to medical records"
+                   style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--white-color); color: var(--text-color); font-size: 14px;">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+          <div>
+            <label style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-color);">Gender</label>
+            <select name="gender"
+                    style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--white-color); color: var(--text-color); font-size: 14px;">
+              <option value="">Select gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          
+          <div>
+            <label style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-color);">Age</label>
+            <input type="number" name="age" min="1" max="120" placeholder="Years"
+                   style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--white-color); color: var(--text-color); font-size: 14px;">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+          <div>
+            <label style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-color);">Height (cm)</label>
+            <input type="number" name="height" step="0.01" min="50" max="250" placeholder="e.g., 170.5"
+                   style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--white-color); color: var(--text-color); font-size: 14px;">
+          </div>
+          
+          <div>
+            <label style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-color);">Weight (kg)</label>
+            <input type="number" name="weight" step="0.01" min="10" max="300" placeholder="e.g., 70.5"
+                   style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--white-color); color: var(--text-color); font-size: 14px;">
+          </div>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div>
+            <label style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-color);">Email Address *</label>
+            <input type="email" name="patient_email" required
+                   style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--white-color); color: var(--text-color); font-size: 14px;">
+          </div>
+          
+          <div>
+            <label style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-color);">Phone Number *</label>
+            <input type="tel" name="patient_phone" required placeholder="e.g., +966501234567"
+                   style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--white-color); color: var(--text-color); font-size: 14px;">
+          </div>
+        </div>
+      </div>
+      
+      <!-- Health Condition -->
+      <div style="border-bottom: 1px solid var(--border-color); padding-bottom: 20px;">
+        <h3 style="font-size: 18px; font-weight: 600; color: var(--text-color); margin-bottom: 15px;">Health Condition</h3>
+        
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-color);">Health Condition Description</label>
+          <textarea name="health_condition" rows="4" placeholder="Please describe your current health condition, symptoms, or any relevant medical information..."
+                    style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--white-color); color: var(--text-color); font-size: 14px; resize: vertical;"></textarea>
+        </div>
+        
+        <div>
+          <label style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-color);">Medical Document (PDF)</label>
+          <div style="position: relative;">
+            <input type="file" name="health_document" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" id="health_document"
+                   style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--white-color); color: var(--text-color); font-size: 14px;">
+            <small style="color: var(--light-text-color); font-size: 12px; margin-top: 5px; display: block;">
+              Upload medical reports, lab results, or any relevant documents (PDF, DOC, or image files)
+            </small>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Appointment Details -->
+      <div style="border-bottom: 1px solid var(--border-color); padding-bottom: 20px;">
+        <h3 style="font-size: 18px; font-weight: 600; color: var(--text-color); margin-bottom: 15px;">Appointment Details</h3>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div>
+            <label style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-color);">Preferred Date *</label>
+            <input type="date" name="appointment_date" required min="{{ today }}"
+                   style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--white-color); color: var(--text-color); font-size: 14px;">
+          </div>
+          
+          <div>
+            <label style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-color);">Preferred Time *</label>
+            <select name="appointment_time" required
+                    style="width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--white-color); color: var(--text-color); font-size: 14px;">
+              <option value="">Select time</option>
+              <option value="09:00">9:00 AM</option>
+              <option value="09:30">9:30 AM</option>
+              <option value="10:00">10:00 AM</option>
+              <option value="10:30">10:30 AM</option>
+              <option value="11:00">11:00 AM</option>
+              <option value="11:30">11:30 AM</option>
+              <option value="12:00">12:00 PM</option>
+              <option value="14:00">2:00 PM</option>
+              <option value="14:30">2:30 PM</option>
+              <option value="15:00">3:00 PM</option>
+              <option value="15:30">3:30 PM</option>
+              <option value="16:00">4:00 PM</option>
+              <option value="16:30">4:30 PM</option>
+              <option value="17:00">5:00 PM</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+
+      
+      <!-- Submit Buttons -->
+      <div style="display: flex; gap: 15px; margin-top: 20px;">
+        <button type="submit" 
+                style="flex: 1; background: var(--primary-color); color: white; padding: 15px 30px; border-radius: 8px; font-weight: 500; border: none; cursor: pointer; transition: var(--tran-03);">
+          Book Appointment
+        </button>
+        
+        <a href="{% url 'main:doctors_list_view' %}" 
+           style="flex: 1; background: var(--white-color); color: var(--text-color); padding: 15px 30px; border-radius: 8px; font-weight: 500; border: 1px solid var(--border-color); text-decoration: none; text-align: center; transition: var(--tran-03);">
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+// Set minimum date to today
+document.addEventListener('DOMContentLoaded', function() {
+    const dateInput = document.querySelector('input[name="appointment_date"]');
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.setAttribute('min', today);
+});
+</script>
+{% endblock %} 

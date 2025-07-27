@@ -1,0 +1,197 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Appointment Details - MediConsult{% endblock %}
+
+{% block content %}
+<div style="padding: 20px; max-width: 1000px; margin: 0 auto;">
+  <!-- Header -->
+  <div style="background: var(--white-color); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+      <h2 style="color: var(--text-color); margin: 0;">Appointment Details</h2>
+      <div class="appointment-status appointment-status-{{ appointment.status }}" style="font-weight: 600; font-size: 16px; padding: 8px 16px; border-radius: 20px; background: rgba(66, 133, 244, 0.1);">
+        {{ appointment.get_status_display }}
+      </div>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+      <div>
+        <p><strong>Date:</strong> {{ appointment.appointment_date }}</p>
+        <p><strong>Time:</strong> {{ appointment.appointment_time }}</p>
+        <p><strong>Created:</strong> {{ appointment.created_at|date:"M d, Y H:i" }}</p>
+      </div>
+      <div>
+        <p><strong>Status:</strong> <span class="appointment-status-{{ appointment.status }}">{{ appointment.get_status_display }}</span></p>
+        {% if appointment.response_date %}
+        <p><strong>Response Date:</strong> {{ appointment.response_date|date:"M d, Y H:i" }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Patient Information -->
+  <div style="background: var(--white-color); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);">
+    <h3 style="color: var(--text-color); margin-bottom: 15px;">
+      <i class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px;">person</i>
+      Patient Information
+    </h3>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+      <div>
+        <p><strong>Name:</strong> {{ appointment.patient_name }}</p>
+        <p><strong>Email:</strong> {{ appointment.patient_email }}</p>
+        <p><strong>Phone:</strong> {{ appointment.patient_phone }}</p>
+        {% if appointment.patient_id %}
+        <p><strong>Patient ID:</strong> {{ appointment.patient_id }}</p>
+        {% endif %}
+      </div>
+      <div>
+        {% if appointment.gender %}
+        <p><strong>Gender:</strong> {{ appointment.get_gender_display }}</p>
+        {% endif %}
+        {% if appointment.age %}
+        <p><strong>Age:</strong> {{ appointment.age }} years</p>
+        {% endif %}
+        {% if appointment.height %}
+        <p><strong>Height:</strong> {{ appointment.height }} cm</p>
+        {% endif %}
+        {% if appointment.weight %}
+        <p><strong>Weight:</strong> {{ appointment.weight }} kg</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Health Condition -->
+  {% if appointment.health_condition %}
+  <div style="background: var(--white-color); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);">
+    <h3 style="color: var(--text-color); margin-bottom: 15px;">
+      <i class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px;">medical_information</i>
+      Health Condition
+    </h3>
+    <div style="background: var(--dashboard-body-color); padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary-color);">
+      <p style="margin: 0; line-height: 1.6;">{{ appointment.health_condition }}</p>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Reason for Visit -->
+  {% if appointment.reason %}
+  <div style="background: var(--white-color); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);">
+    <h3 style="color: var(--text-color); margin-bottom: 15px;">
+      <i class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px;">description</i>
+      Reason for Visit
+    </h3>
+    <div style="background: var(--dashboard-body-color); padding: 15px; border-radius: 8px;">
+      <p style="margin: 0; line-height: 1.6;">{{ appointment.reason }}</p>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Medical Document -->
+  {% if appointment.health_document %}
+  <div style="background: var(--white-color); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);">
+    <h3 style="color: var(--text-color); margin-bottom: 15px;">
+      <i class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px;">attach_file</i>
+      Medical Document
+    </h3>
+    <div style="display: flex; align-items: center; gap: 15px;">
+      <div style="background: var(--primary-color); color: white; padding: 10px; border-radius: 8px;">
+        <i class="material-symbols-outlined">picture_as_pdf</i>
+      </div>
+      <div>
+        <p style="margin: 0; font-weight: 500;">{{ appointment.health_document.name }}</p>
+        <a href="{{ appointment.health_document.url }}" target="_blank" 
+           style="color: var(--primary-color); text-decoration: none; font-size: 14px;">
+          <i class="material-symbols-outlined" style="font-size: 16px; vertical-align: middle;">download</i>
+          Download Document
+        </a>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Doctor Response Section -->
+  <div style="background: var(--white-color); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);">
+    <h3 style="color: var(--text-color); margin-bottom: 15px;">
+      <i class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px;">medical_services</i>
+      Doctor Response
+    </h3>
+    
+    {% if appointment.doctor_response %}
+    <!-- Existing Response -->
+    <div style="background: #f0f9ff; padding: 15px; border-radius: 8px; border-left: 4px solid #10b981; margin-bottom: 15px;">
+      <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 10px;">
+        <strong style="color: #10b981;">✓ Response Sent</strong>
+        <span style="font-size: 12px; color: var(--light-text-color);">{{ appointment.response_date|date:"M d, Y H:i" }}</span>
+      </div>
+      <p style="margin: 0; line-height: 1.6; color: #374151;">{{ appointment.doctor_response }}</p>
+    </div>
+    <p style="color: var(--light-text-color); font-size: 14px; text-align: center;">
+      Patient has been notified of your response.
+    </p>
+    {% else %}
+    <!-- Response Form -->
+    {% if appointment.status == 'pending' %}
+    <form method="post" action="{% url 'doctors:process_doctor_response' appointment.id %}">
+      {% csrf_token %}
+      <div style="margin-bottom: 15px;">
+        <label for="doctor_response" style="display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-color);">
+          Your Response & Diagnosis:
+        </label>
+        <textarea 
+          id="doctor_response" 
+          name="doctor_response" 
+          rows="6" 
+          style="width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: 8px; font-family: inherit; font-size: 14px; line-height: 1.5; resize: vertical;"
+          placeholder="Provide your medical diagnosis, treatment recommendations, and any additional advice for the patient..."
+          required></textarea>
+      </div>
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 15px;">
+        <div style="color: var(--light-text-color); font-size: 14px;">
+          <i class="material-symbols-outlined" style="font-size: 16px; vertical-align: middle; margin-right: 5px;">info</i>
+          This response will be sent to the patient and the status will change to "Completed"
+        </div>
+        <button type="submit" 
+                style="background: var(--primary-color); color: white; padding: 12px 24px; border: none; border-radius: 8px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+          <i class="material-symbols-outlined">send</i>
+          Send Response
+        </button>
+      </div>
+    </form>
+    {% else %}
+    <p style="color: var(--light-text-color); text-align: center; padding: 20px;">
+      This appointment is marked as {{ appointment.get_status_display|lower }}. No response needed.
+    </p>
+    {% endif %}
+    {% endif %}
+  </div>
+
+  <!-- Back Button -->
+  <div style="text-align: center;">
+    <a href="{% url 'doctors:doctor_dashboard_view' %}?doctor_email={{ doctor_email }}" 
+       style="background: var(--dashboard-body-color); color: var(--text-color); padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+      <i class="material-symbols-outlined">arrow_back</i>
+      Back to Dashboard
+    </a>
+  </div>
+</div>
+
+<style>
+@media (max-width: 768px) {
+  .appointment-detail-container {
+    padding: 10px !important;
+  }
+  
+  .appointment-detail-container > div {
+    margin-bottom: 15px !important;
+  }
+  
+  .appointment-detail-container div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+    gap: 15px !important;
+  }
+}
+</style>
+{% endblock %} 

@@ -1,0 +1,280 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Patient Dashboard - MediConsult{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-content">
+  <!-- Statistics Cards -->
+  <div class="item item--1">
+    <div class="pics-content">
+      <div class="pics">
+        <i class="material-symbols-outlined">upcoming</i>
+      </div>
+      <div class="right">
+        <div class="number">{{ upcoming_appointments.count }}</div>
+        <div class="footer">
+          <span>Upcoming Appointments</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item item--2">
+    <div class="pics-content">
+      <div class="pics">
+        <i class="material-symbols-outlined">history</i>
+      </div>
+      <div class="right">
+        <div class="number">{{ appointment_history.count }}</div>
+        <div class="footer">
+          <span>Total Appointments</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item item--3">
+    <div class="pics-content">
+      <div class="pics">
+        <i class="material-symbols-outlined">favorite</i>
+      </div>
+      <div class="right">
+        <div class="number">98</div>
+        <div class="footer">
+          <span class="red">Health Score</span>
+          <div class="arrow">
+            <i class="material-symbols-outlined">trending_up</i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item item--4">
+    <div class="pics-content">
+      <div class="pics">
+        <i class="material-symbols-outlined">local_pharmacy</i>
+      </div>
+      <div class="right">
+        <div class="number">3</div>
+        <div class="footer">
+          <span class="green">Active Prescriptions</span>
+          <div class="arrow">
+            <i class="material-symbols-outlined">medication</i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upcoming Appointments -->
+  <div class="item item--5">
+    <div class="chart-content">
+      <div class="header">Upcoming Appointments</div>
+      <div style="padding: 20px;">
+        {% if upcoming_appointments %}
+          {% for appointment in upcoming_appointments %}
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border-color);">
+              <div>
+                <strong>Dr. {{ appointment.doctor.first_name }} {{ appointment.doctor.last_name }}</strong>
+                <br>
+                <span style="color: var(--light-text-color); font-size: 12px;">
+                  {{ appointment.appointment_date }} at {{ appointment.appointment_time }}
+                </span>
+                <br>
+                <span style="color: var(--primary-color); font-size: 11px;">
+                  {% if appointment.doctor.doctorprofile.specialty %}
+                    {{ appointment.doctor.doctorprofile.specialty.name }}
+                  {% else %}
+                    General Medicine
+                  {% endif %}
+                </span>
+              </div>
+              <div style="color: var(--primary-color); font-weight: 500;">
+                {{ appointment.get_status_display }}
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div style="text-align: center; color: var(--light-text-color); padding: 40px;">
+            <i class="material-symbols-outlined" style="font-size: 48px; margin-bottom: 10px;">event_available</i>
+            <p>No upcoming appointments</p>
+            <a href="{% url 'main:doctors_list_view' %}" style="color: var(--primary-color); text-decoration: none; font-weight: 500;">Book an appointment</a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Health Progress Card -->
+  <div class="item item--6">
+    <div class="rating-card">
+      <div class="text-box-header">Overall Health Rating</div>
+      <div class="rating-content">
+        <div class="star-box">
+          <i class="material-symbols-outlined">star</i>
+          <i class="material-symbols-outlined">star</i>
+          <i class="material-symbols-outlined">star</i>
+          <i class="material-symbols-outlined">star</i>
+          <i class="material-symbols-outlined">star</i>
+        </div>
+      </div>
+      <div class="rating-text-box">
+        <div class="rating-text">
+          <span class="rating-text-big">5.0</span>/5.0
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Additional Sections -->
+<div style="margin: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+  
+  <!-- Recent Appointments History -->
+  <div class="item" style="padding: 20px;">
+    <h3 style="color: var(--primary-color); margin-bottom: 20px; display: flex; align-items: center;">
+      <i class="material-symbols-outlined" style="margin-right: 10px;">event_note</i>
+      Recent Appointments
+    </h3>
+    {% if appointment_history %}
+      {% for appointment in appointment_history|slice:":5" %}
+        <div style="padding: 15px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <strong>Dr. {{ appointment.doctor.first_name }} {{ appointment.doctor.last_name }}</strong>
+            <br>
+            <span style="color: var(--light-text-color); font-size: 12px;">
+              {{ appointment.appointment_date|date:"M d, Y" }}
+            </span>
+          </div>
+          <div style="color: {% if appointment.status == 'completed' %}green{% elif appointment.status == 'cancelled' %}red{% else %}var(--primary-color){% endif %};">
+            {{ appointment.get_status_display }}
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div style="text-align: center; color: var(--light-text-color); padding: 40px;">
+        <i class="material-symbols-outlined" style="font-size: 48px; margin-bottom: 10px;">event_busy</i>
+        <p>No appointment history</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Health Metrics Progress -->
+  <div class="item" style="padding: 20px;">
+    <h3 style="color: var(--primary-color); margin-bottom: 20px; display: flex; align-items: center;">
+      <i class="material-symbols-outlined" style="margin-right: 10px;">monitor_heart</i>
+      Health Metrics
+    </h3>
+    <div class="our-skills">
+      <div class="skill">
+        <p>Blood Pressure</p>
+        <div class="progress-line" style="--wd: 88%;">
+          <span></span>
+        </div>
+      </div>
+      <div class="skill">
+        <p>Heart Rate</p>
+        <div class="progress-line" style="--wd: 95%;">
+          <span></span>
+        </div>
+      </div>
+      <div class="skill">
+        <p>Overall Wellness</p>
+        <div class="progress-line" style="--wd: 92%;">
+          <span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Health Reminders -->
+<div style="margin: 20px;">
+  <div class="item" style="padding: 20px;">
+    <h3 style="color: var(--primary-color); margin-bottom: 20px; display: flex; align-items: center;">
+      <i class="material-symbols-outlined" style="margin-right: 10px;">notifications_active</i>
+      Health Reminders
+    </h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px;">
+      
+      <div style="padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px; display: flex; align-items: center;">
+        <i class="material-symbols-outlined" style="margin-right: 15px; font-size: 32px;">medication</i>
+        <div>
+          <strong>Take Medication</strong>
+          <br>
+          <span style="font-size: 12px; opacity: 0.9;">Daily vitamins - 2 hours remaining</span>
+        </div>
+      </div>
+
+      <div style="padding: 15px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border-radius: 12px; display: flex; align-items: center;">
+        <i class="material-symbols-outlined" style="margin-right: 15px; font-size: 32px;">water_drop</i>
+        <div>
+          <strong>Stay Hydrated</strong>
+          <br>
+          <span style="font-size: 12px; opacity: 0.9;">Drink 2 more glasses today</span>
+        </div>
+      </div>
+
+      <div style="padding: 15px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; border-radius: 12px; display: flex; align-items: center;">
+        <i class="material-symbols-outlined" style="margin-right: 15px; font-size: 32px;">directions_walk</i>
+        <div>
+          <strong>Exercise</strong>
+          <br>
+          <span style="font-size: 12px; opacity: 0.9;">30 min walk recommended</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div style="margin: 20px;">
+  <div class="item" style="padding: 20px;">
+    <h3 style="color: var(--primary-color); margin-bottom: 20px; display: flex; align-items: center;">
+      <i class="material-symbols-outlined" style="margin-right: 10px;">bolt</i>
+      Quick Actions
+    </h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+      <a href="{% url 'main:doctors_list_view' %}" style="display: flex; align-items: center; padding: 15px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px; transition: var(--tran-03);">
+        <i class="material-symbols-outlined" style="margin-right: 10px;">add</i>
+        Book Appointment
+      </a>
+      <a href="#" style="display: flex; align-items: center; padding: 15px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px; transition: var(--tran-03);">
+        <i class="material-symbols-outlined" style="margin-right: 10px;">person</i>
+        Update Profile
+      </a>
+      <a href="#" style="display: flex; align-items: center; padding: 15px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px; transition: var(--tran-03);">
+        <i class="material-symbols-outlined" style="margin-right: 10px;">description</i>
+        Medical Records
+      </a>
+      <a href="#" style="display: flex; align-items: center; padding: 15px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 8px; transition: var(--tran-03);">
+        <i class="material-symbols-outlined" style="margin-right: 10px;">chat</i>
+        Message Doctor
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Quick Actions Hover Effects */
+  [href]:hover {
+    background: var(--primary-color2) !important;
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Health Reminders Animation */
+  .item div[style*="gradient"] {
+    transition: var(--tran-03);
+  }
+  
+  .item div[style*="gradient"]:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+  }
+</style>
+
+{% endblock %} 
