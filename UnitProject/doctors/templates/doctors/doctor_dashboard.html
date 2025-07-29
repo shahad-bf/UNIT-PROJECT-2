@@ -1,0 +1,87 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Doctor Dashboard - MediConsult{% endblock %}
+
+{% block content %}
+
+<!-- Doctor ID Form -->
+{% if not doctor_profile %}
+<div style="padding: 40px 20px; background: var(--white-color); border-radius: 12px; margin: 20px; box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.1); text-align: center;">
+
+  
+  <form method="GET" style="max-width: 400px; margin: 0 auto;">
+    <div style="margin-bottom: 20px;">
+      <input type="text" 
+             name="doctor_id" 
+             placeholder="Enter your doctor ID" 
+             value="{{ doctor_id|default:'' }}"
+             required
+             style="width: 100%; padding: 15px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 16px; background: var(--dashboard-body-color); color: var(--text-color);">
+    </div>
+    <button type="submit" 
+            style="background: var(--primary-color); color: white; padding: 15px 30px; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; transition: var(--tran-03);">
+      Access Dashboard
+    </button>
+  </form>
+</div>
+{% else %}
+
+<!-- Welcome Message -->
+<div style="padding: 20px; background: var(--primary-color); color: white; border-radius: 12px; margin: 20px; text-align: center;">
+  <h2 style="margin: 0;">Welcome, Dr. {{ doctor_profile.user.get_full_name }}!</h2>
+  <p style="margin: 5px 0 0 0;">{{ doctor_profile.specialty.name }} | ID: {{ doctor_id }}</p>
+</div>
+
+<!-- Pending Responses Section -->
+<div style="margin: 20px;">
+  <div id="pending-section" class="item" style="padding: 30px;">
+    <h3 style="color: var(--primary-color); margin-bottom: 30px; display: flex; align-items: center; font-size: 24px;">
+      <i class="material-symbols-outlined" style="margin-right: 15px; font-size: 30px;">pending</i>
+      Pending Responses
+      {% if pending_appointments %}
+        <span style="background: #f59e0b; color: white; padding: 4px 12px; border-radius: 20px; font-size: 14px; margin-left: 15px;">
+          {{ pending_appointments.count }}
+        </span>
+      {% endif %}
+    </h3>
+    
+    {% if pending_appointments %}
+      {% for appointment in pending_appointments %}
+        <div style="padding: 20px; border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; background: var(--white-color); transition: var(--tran-03);" 
+             onmouseover="this.style.boxShadow='0px 4px 12px rgba(0, 0, 0, 0.1)'; this.style.transform='translateY(-2px)'"
+             onmouseout="this.style.boxShadow=''; this.style.transform=''">
+          <div style="flex-grow: 1;">
+            <h4 style="color: var(--text-color); margin: 0 0 8px 0; font-size: 18px;">{{ appointment.patient_name }}</h4>
+            <p style="color: var(--light-text-color); margin: 0 0 8px 0; font-size: 14px;">
+              <i class="material-symbols-outlined" style="font-size: 16px; vertical-align: middle; margin-right: 5px;">event</i>
+              {{ appointment.appointment_date }} at {{ appointment.appointment_time }}
+            </p>
+            <span style="color: #f59e0b; font-size: 13px; font-weight: 500; background: rgba(245, 158, 11, 0.1); padding: 4px 8px; border-radius: 6px;">
+              <i class="material-symbols-outlined" style="font-size: 14px; vertical-align: middle; margin-right: 4px;">schedule</i>
+              Waiting for your response
+            </span>
+          </div>
+          <div>
+            <a href="{% url 'doctors:appointment_detail_view' appointment.id %}" 
+               style="background: #f59e0b; color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; font-weight: 500; transition: var(--tran-03);"
+               onmouseover="this.style.background='#d97706'"
+               onmouseout="this.style.background='#f59e0b'">
+              <i class="material-symbols-outlined" style="font-size: 18px;">reply</i>
+              Respond Now
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+
+    {% endif %}
+  </div>
+</div>
+
+
+
+
+
+{% endif %}
+{% endblock %} 

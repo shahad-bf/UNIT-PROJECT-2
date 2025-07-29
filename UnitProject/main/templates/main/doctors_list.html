@@ -75,6 +75,13 @@
             <span style="font-size: 14px;">{{ doctor.years_experience }} years experience</span>
           </div>
           
+          {% if doctor.gender %}
+            <div style="display: flex; align-items: center; color: var(--light-text-color); margin-bottom: 8px;">
+              <span class="material-symbols-outlined" style="font-size: 16px; margin-right: 8px;">person</span>
+              <span style="font-size: 14px;">{{ doctor.get_gender_display }}</span>
+            </div>
+          {% endif %}
+          
           {% if doctor.consultation_fee %}
             <div style="display: flex; align-items: center; color: var(--light-text-color); margin-bottom: 15px;">
               <span class="material-symbols-outlined" style="font-size: 16px; margin-right: 8px;">payments</span>

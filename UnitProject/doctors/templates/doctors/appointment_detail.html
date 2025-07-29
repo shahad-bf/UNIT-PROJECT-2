@@ -14,17 +14,9 @@
       </div>
     </div>
     
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-      <div>
-        <p><strong>Date:</strong> {{ appointment.appointment_date }}</p>
-        <p><strong>Time:</strong> {{ appointment.appointment_time }}</p>
-        <p><strong>Created:</strong> {{ appointment.created_at|date:"M d, Y H:i" }}</p>
-      </div>
+    <div style="display: grid; grid-template-columns: 1fr; gap: 20px;">
       <div>
         <p><strong>Status:</strong> <span class="appointment-status-{{ appointment.status }}">{{ appointment.get_status_display }}</span></p>
-        {% if appointment.response_date %}
-        <p><strong>Response Date:</strong> {{ appointment.response_date|date:"M d, Y H:i" }}</p>
-        {% endif %}
       </div>
     </div>
   </div>
@@ -39,8 +31,6 @@
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
       <div>
         <p><strong>Name:</strong> {{ appointment.patient_name }}</p>
-        <p><strong>Email:</strong> {{ appointment.patient_email }}</p>
-        <p><strong>Phone:</strong> {{ appointment.patient_phone }}</p>
         {% if appointment.patient_id %}
         <p><strong>Patient ID:</strong> {{ appointment.patient_id }}</p>
         {% endif %}
@@ -170,7 +160,7 @@
 
   <!-- Back Button -->
   <div style="text-align: center;">
-    <a href="{% url 'doctors:doctor_dashboard_view' %}?doctor_email={{ doctor_email }}" 
+    <a href="{% url 'doctors:doctor_dashboard_view' %}?doctor_id={{ doctor_profile.id }}" 
        style="background: var(--dashboard-body-color); color: var(--text-color); padding: 12px 24px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
       <i class="material-symbols-outlined">arrow_back</i>
       Back to Dashboard

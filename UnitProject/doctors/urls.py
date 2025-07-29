@@ -4,6 +4,12 @@ from . import views
 app_name = 'doctors'
 
 urlpatterns = [
+    # Doctor dashboard
+    path('dashboard/', views.doctor_dashboard_view, name='doctor_dashboard_view'),
+    
+    # Doctor profile management
+    path('profile/', views.doctor_profile_view, name='doctor_profile_view'),
+    
     # Appointment management
     path('appointment/<int:appointment_id>/', views.appointment_detail_view, name='appointment_detail_view'),
     path('appointment/<int:appointment_id>/respond/', views.process_doctor_response, name='process_doctor_response'),
