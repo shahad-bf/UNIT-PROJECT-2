@@ -17,7 +17,7 @@ class DoctorProfile(models.Model):
     GENDER_CHOICES = [
         ('male', 'Male'),
         ('female', 'Female'),
-        ('other', 'Other'),
+       
     ]
     
     user = models.OneToOneField(User, on_delete=models.CASCADE)  # Direct link to Django user
